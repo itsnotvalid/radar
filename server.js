@@ -9,13 +9,13 @@ var http = require('http'),
     Api = require('./api/api.js'),
     Minilog = require('minilog');
 
-var server,
-    stdoutPipe = Minilog.pipe(Minilog.backends.nodeConsole);
+var server;
 
 // configure log output
-stdoutPipe
-  .filter(Minilog.backends.nodeConsole.filterEnv((process.env.radar_log ? process.env.radar_log : '*')))
-  .format(Minilog.backends.nodeConsole.formatWithStack);
+Minilog
+  .pipe(Minilog.backends.console.filterEnv((process.env.radar_log ? process.env.radar_log : '*')))
+  .pipe(Minilog.backends.console.formatWithStack)
+  .pipe(Minilog.backends.console);
 
 function p404(req, res){
   console.log('Returning Error 404 for '+req.method+' '+req.url);
